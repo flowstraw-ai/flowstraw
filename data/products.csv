@@ -1,0 +1,16 @@
+ProductID,ProductName,Category,UnitPrice,UnitCost
+1,Laptop Pro 14,Electronics,349.88,263.39
+2,Laptop Air 13,Electronics,1449.1,942.88
+3,4K Monitor 27,Electronics,2346.24,1617.87
+4,Mechanical Keyboard,Electronics,192.66,97.33
+5,Wireless Mouse,Electronics,996.71,602.24
+6,Noise-Canceling Headphones,Electronics,1900.29,1386.19
+7,Office Chair Ergo,Furniture,2617.54,1766.16
+8,Standing Desk,Furniture,1125.89,608.1
+9,Conference Table,Furniture,1057.98,681.12
+10,LED Desk Lamp,Furniture,2510.69,1484.91
+11,Team License - Analytics,Software,1149.56,676.29
+12,Cloud Backup 1TB,Software,2154.78,1251.87
+13,CRM Seat License,Software,357.54,268.65
+14,Email Automation Suite,Software,1021.0,637.77
+15,Security Suite,Software,2404.15,1789.15
