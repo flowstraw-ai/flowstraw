@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowStraw AI — ETL Modernization CoPilot</title>
+
+    <style>
+        :root {
+            --primary: #0a6cff;
+            --primary-soft: rgba(10,108,255,0.08);
+            --secondary: #06b6d4;
+            --accent: #f97316;
+            --bg: #f3f6fb;
+            --card: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top,#e0edff 0,#f3f6fb 55%,#ffffff 100%);
+            color: var(--text-main);
+        }
+
+        header {
+            background: rgba(255,255,255,0.95);
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg,var(--primary),var(--secondary));
+            color: #f9fafb;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: left;
+            padding: 70px 40px 50px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0,3fr) minmax(0,2.5fr);
+            gap: 40px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .hero-title span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 560px;
+            line-height: 1.6;
+        }
+
+        .hero-badges {
+            margin: 18px 0 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hero-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.7);
+            background: rgba(255,255,255,0.9);
+        }
+
+        .cta-row {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-size: 15px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid rgba(37,99,235,0.3);
+        }
+
+        .cta-note {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .hero-card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 14px 35px rgba(15,23,42,0.12);
+            border: 1px solid rgba(148,163,184,0.4);
+        }
+
+        .hero-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .hero-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .hero-metric span:first-child {
+            color: var(--text-muted);
+        }
+
+        .hero-metric span:last-child {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* GENERIC SECTIONS */
+        .section {
+            padding: 40px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section h3 {
+            font-size: 26px;
+            margin-bottom: 16px;
+        }
+
+        .section > p {
+            color: var(--text-muted);
+            max-width: 780px;
+            line-height: 1.6;
+        }
+
+        /* FEATURE CARDS */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,0.4);
+            box-shadow: 0 8px 22px rgba(15,23,42,0.06);
+            font-size: 15px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            padding: 3px 9px;
+            font-size: 11px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            color: #1d4ed8;
+            margin-bottom: 8px;
+        }
+
+        .feature-box h4 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .feature-box p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 20px;
+        }
+
+        .how-card {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,0.4);
+            box-shadow: 0 10px 26px rgba(15,23,42,0.06);
+            font-size: 15px;
+        }
+
+        .how-step-number {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .how-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .how-card h4 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .how-card p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .how-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
+
+        /* Founding Partners Banner */
+        .partners-strip {
+            margin-top: 18px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(10,108,255,0.07), rgba(6,182,212,0.08));
+            border: 1px dashed rgba(37,99,235,0.4);
+            font-size: 13px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .partners-pill {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: white;
+            border: 1px solid rgba(148,163,184,0.5);
+            color: var(--text-muted);
+        }
+
+        /* CTA BOTTOM */
+        .cta-bottom {
+            text-align: center;
+            padding: 40px 20px 60px;
+        }
+
+        .cta-bottom h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .cta-bottom p {
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 0 auto 18px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            background: #e5edf9;
+            color: #4b5563;
+            font-size: 13px;
+            border-top: 1px solid rgba(148,163,184,0.5);
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: minmax(0,1fr);
+                padding: 50px 20px 40px;
+            }
+            header {
+                padding: 14px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-wrap">
+        <div class="logo-pill">FlowStraw AI</div>
+        <h1>ETL Modernization CoPilot</h1>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div>
+        <h2 class="hero-title"><span>Modernize ETL</span> with AI-Assisted & Agentic Workflows</h2>
+        <p>
+            FlowStraw AI is a SaaS-based CoPilot that reads legacy ETL jobs, explains what they do,
+            and helps your team migrate faster to dbt, Glue, Snowflake, and beyond —
+            with early agentic automation guiding each step.
+        </p>
+
+        <div class="hero-badges">
+            <div class="hero-badge">LLM-Powered Analysis</div>
+            <div class="hero-badge">Agentic Planning (Early)</div>
+            <div class="hero-badge">Private SaaS Deployment</div>
+        </div>
+
+        <div class="cta-row">
+            <a href="#" class="cta-btn">Request Demo</a>
+            <a href="#" class="cta-btn secondary">Download One-Pager</a>
+            <span class="cta-note">Early access available for select teams.</span>
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <h3>Migration Snapshot</h3>
+        <p style="color: var(--text-muted); font-size: 14px;">
+            A typical FlowStraw AI engagement:
+        </p>
+
+        <div class="hero-metric">
+            <span>Legacy jobs auto-analyzed</span>
+            <span>120+</span>
+        </div>
+        <div class="hero-metric">
+            <span>Manual documentation reduced</span>
+            <span>↓ 65%</span>
+        </div>
+        <div class="hero-metric">
+            <span>dbt/Glue models generated</span>
+            <span>80+</span>
+        </div>
+        <div class="hero-metric">
+            <span>Time-to-pattern discovery</span>
+            <span>Hours → Minutes</span>
+        </div>
+    </div>
+</section>
+
+<!-- WHAT IT DOES -->
+<section class="section">
+    <h3>What FlowStraw AI Helps You Do</h3>
+    <p>
+        Instead of sifting through decades of ETL code and tribal knowledge, FlowStraw AI uses
+        LLM-based reasoning and light agentic automation to accelerate every stage of modernization.
+    </p>
+
+    <div class="features">
+
+        <div class="feature-box">
+            <div class="feature-tag">Understand</div>
+            <h4>🔍 Ingest & Decode Legacy Pipelines</h4>
+            <p>
+                Upload SSIS, Informatica, DataStage, or SQL assets and let FlowStraw AI surface
+                mappings, transformations, dependencies, and lineage.
+            </p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-tag">Plan</div>
+            <h4>⚙️ Agentic-Aware Migration Planning</h4>
+            <p>
+                Early agentic workflows evaluate patterns and propose target designs:
+                staging → core → marts.
+            </p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-tag">Build</div>
+            <h4>🛠 Generate Modern Artifacts</h4>
+            <p>
+                Generate dbt SQL, YAML, Glue PySpark, and technical specs aligned to your cloud platform.
+            </p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-tag">Validate</div>
+            <h4>📊 Compare Outputs & Ensure Quality</h4>
+            <p>
+                Run side-by-side checks between legacy and new pipelines to ensure accuracy before go-live.
+            </p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-tag">Document</div>
+            <h4>📄 Stay Audit & Team Ready</h4>
+            <p>
+                Auto-create mapping docs, lineage summaries, and knowledge-transfer artifacts.
+            </p>
+        </div>
+
+        <div class="feature-box">
+            <div class="feature-tag">Secure</div>
+            <h4>🔐 Private SaaS, Enterprise Friendly</h4>
+            <p>
+                Keep compute inside your VPC while using FlowStraw AI as the SaaS UI layer.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+    <h3>How It Works — In 3 Simple Steps</h3>
+    <p>
+        Your MVP experience is intentionally simple: upload a slice of your ETL portfolio,
+        review AI insights, and export production-ready modernization artifacts.
+    </p>
+
+    <div class="how-steps">
+
+        <div class="how-card">
+            <div class="how-step-number">1</div>
+            <div class="how-label">Connect</div>
+            <h4>Upload Legacy ETL Jobs or Extracts</h4>
+            <p>
+                Start with SSIS/DataStage/Informatica exports or SQL/CSV extracts.
+                FlowStraw AI ingests structure and transformation logic.
+            </p>
+        </div>
+
+        <div class="how-card">
+            <div class="how-step-number">2</div>
+            <div class="how-label">Analyze</div>
+            <h4>AI Interprets Logic & Recommends Targets</h4>
+            <p>
+                LLM-driven reasoning identifies joins, filters, and patterns, proposing
+                staging/core/marts based on industry best practices.
+            </p>
+        </div>
+
+        <div class="how-card">
+            <div class="how-step-number">3</div>
+            <div class="how-label">Generate</div>
+            <h4>Export Modern Pipelines & Documentation</h4>
+            <p>
+                Export dbt models, PySpark Glue jobs, SQL scripts, lineage docs, and mapping specifications.
+            </p>
+        </div>
+
+    </div>
+
+    <p class="how-note">
+        The MVP keeps a human in the loop — deeper multi-step agentic automation arrives in upcoming releases.
+    </p>
+
+    <div class="partners-strip">
+        <strong>Founding Design Partners:</strong>
+        <span>Accepting 3–5 teams to shape the next generation of agentic ETL modernization.</span>
+        <span class="partners-pill">Ideal for ETL → dbt / ETL → Glue</span>
+        <span class="partners-pill">Financial, Healthcare, Government</span>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-bottom">
+    <h2>Ready to See FlowStraw AI in Action?</h2>
+    <p>
+        Upload a small sample of your ETL or data extracts and instantly see patterns,
+        insights, and modernization options powered by AI-assisted and agentic workflows.
+    </p>
+    <a href="#" class="cta-btn">Book a 30-Minute Walkthrough</a>
+</section>
+
+<footer>
+    © 2025 FlowStraw AI — ETL Modernization CoPilot
+</footer>
+
+</body>
+</html>
